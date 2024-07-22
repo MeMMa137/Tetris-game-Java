@@ -1,5 +1,6 @@
 package com.PD2.Tetris.App;
 
+import static com.PD2.Tetris.App.Tetris.wall;
 import com.PD2.Tetris.block.*;
 import com.PD2.Tetris.shape.*;
 
@@ -163,4 +164,63 @@ public class Tetris extends JPanel implements KeyListener {
 
     }
 }
+
+public void dropCurrentTetromino() {
+        int check_boundary=0;
+        if (currentTetromino != null) {
+            //System.out.println(currentTetromino.coincide());
+            check_boundary=currentTetromino.moveDown();    
+            System.out.println("dropcurrent");
+            if (check_boundary==1) {
+                check_boundary=0;
+                System.out.println("reach buttom");
+                int linesCleared = wall.add(currentTetromino);
+                if (linesCleared > 0) {
+                    scoreManager.updateScore(linesCleared, 0);
+                    spawnNewTetromino();
+                    System.out.println("score:"+scoreManager.getTotalScore());
+
+
+                }
+                else if(linesCleared ==Wall.LOSE){
+                    currentTetromino=null;
+                    endGame();
+                }
+                else {
+                    holdUsed = false;
+
+                    spawnNewTetromino();
+                }
+
+
+            }
+
+            repaint();
+        }
+    }
+    @Override
+    public void paintComponent(Graphics g) {
+        //super.paintComponent(g);
+        wall.paint(g);
+        if (currentTetromino != null) {
+            currentTetromino.paint(g);
+            //System.out.println("paintcompo");
+        }
+        drawNextTetromino(g); 
+    }
+
+public void drawNextTetromino(Graphics g) {
+        if (nextTetromino != null) {
+            int offsetX = 400; 
+            int offsetY = 50;
+            int[][] blockPositions = nextTetromino.getBlockPositions();
+            BufferedImage image = nextTetromino.getImage();
+            for (int[] position : blockPositions) {
+                int x = position[0] * Cell.SIZE + offsetX;
+                int y = position[1] * Cell.SIZE + offsetY;
+                g.drawImage(image, x, y, null);
+            }
+        }
+    }
+
 }
