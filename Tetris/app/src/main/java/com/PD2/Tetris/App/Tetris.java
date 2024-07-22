@@ -1,5 +1,6 @@
 package com.PD2.Tetris.App;
 
+import static com.PD2.Tetris.App.Tetris.background;
 import static com.PD2.Tetris.App.Tetris.wall;
 import com.PD2.Tetris.block.*;
 import com.PD2.Tetris.shape.*;
@@ -222,5 +223,97 @@ public void drawNextTetromino(Graphics g) {
             }
         }
     }
+
+private void paintSource(Graphics g) {
+        g.setFont(new Font(Font.SANS_SERIF, Font.BOLD, 40));
+        g.drawString("score: " + scoreManager.getTotalScore(), 490, 250);
+        g.drawString("total lines:"  + scoreManager.getTotalLine(), 490, 430);
+    }
+
+    public void start() {
+        timer.scheduleAtFixedRate(new TimerTask() {
+            @Override
+            public void run() {
+                if (!isPaused && !isOver) {
+                    //System.out.println("sssttart");
+                    dropCurrentTetromino();
+                }
+            }
+        }, 0, delay);
+
+        spawnNewTetromino();
+    }
+
+    @Override
+    public void paint(Graphics g) {
+        g.drawImage(background, 0, 0, null);
+        // 平移坐标轴
+        g.translate(22, 15);
+        paintComponent(g);
+        drawNextTetromino(g);
+        paintSource(g);
+
+        //System.out.println("draw");
+    }
+    //++++++++++++++++++++++++++++++++++++++++++
+    public void moveCurrentTetrominoLeft() {
+        if (currentTetromino != null) {
+            currentTetromino.moveLeft();
+            repaint();
+        }
+    }
+
+    public void moveCurrentTetrominoRight() {
+        if (currentTetromino != null) {
+            currentTetromino.moveRight();
+            repaint();
+        }
+    }
+
+    public void rotateCurrentTetromino() {
+        if (currentTetromino != null) {
+            currentTetromino.rotate();
+            repaint();
+        }
+    }
+
+    public void pause() {
+        isPaused = true;
+        timer.cancel();
+    }
+
+    public void resume() {
+        isPaused = false;
+        timer = new Timer();
+        start();
+    }
+
+
+    public static void main(String[] args) {
+        Menu menu = new Menu();
+        menu.start_button.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent actionEvent) {
+                System.out.println("game start!!!");
+                menu.frame.dispose();
+                Tetris panel=new Tetris();
+                //JFrame game_frame = new JFrame("NCKU Tetris");
+                JFrame game_frame=panel.gameFrame;
+                game_frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+
+
+                //GameController gameController = new GameController(game_frame);
+                game_frame.setSize(810, 940);
+                game_frame.add(panel);
+                //game_frame.add(gameController);
+                game_frame.setVisible(true);
+                panel.start();
+            }
+        });
+    }
+
+
+    @Override
+    public void keyTyped(KeyEvent keyEvent) {}
 
 }
