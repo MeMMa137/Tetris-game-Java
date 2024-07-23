@@ -65,3 +65,56 @@ public class scoreEstimate {
                         speed = 250;
                     }
                 }
+                if(totalScore >= 2500){
+                    totalScore = totalScore - 2;
+                }
+                if (lines >= 0 && lines < scorePoolLength) {
+                    if(totalScore > 2500 && lines > 0){
+                        totalScore = totalScore + 2;
+                    }
+        
+                    if((totalScore >= 2500 && totalScore < 3500)){
+                        totalScore += scoresPoolSpeed1[lines];
+                        totalLine += lines;
+                        speed = 550 - totalScore/15;
+                    }
+                    else if((totalScore >= 3500 && totalScore < 4500)){
+                        totalScore += scoresPoolSpeed2[lines];
+                        totalLine += lines;
+                        speed = 550 - totalScore/15;
+                        if(speed <= 200){
+                            speed = 200;
+                        }
+                    }
+                    else if((totalScore >= 4500 && totalScore < 5500)){
+                        totalScore += scoresPoolSpeed3[lines];
+                        totalLine += lines;
+                        speed = 530 - totalScore/10;
+                        if(speed <= 200){
+                            speed = 200;
+                        }
+                    }
+                }
+               
+                if(totalScore >= 5500){
+                    speed = (int)(Math.random()*(500 - 300 + 1)) + 300;
+                    if (lines >= 0 && lines < scorePoolLength) {
+                        if((speed >= 400)){
+                            totalScore += scoresPoolSpeed1[lines];
+                            totalLine += lines;
+                        }
+                        else if(speed >= 350 && speed < 400){
+                            totalScore += scoresPoolSpeed2[lines];
+                            totalLine += lines;
+                        }
+                        else if(speed < 350){
+                            totalScore += scoresPoolSpeed3[lines];
+                            totalLine += lines;
+                        }
+                    }
+                }
+            }
+        }
+       
+    }
+}
