@@ -82,6 +82,35 @@ public class Menu {
 
             }
         });
+        
+//leader_board_button
+        leader_board_button = new JButton("Leader Board");
+        leader_board_button.setBackground(buttonBackgroundColor);
+        leader_board_button.setForeground(buttonTextColor);
+        leader_board_button.setFont(button_font);
+        //button_panel.add(leader_board_button);
+
+        leader_board_button.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent actionEvent) {
+                System.out.println("click leader board");
+
+            }
+        });
+
+        container.add(icon_panel);//update the UI
+        container.add(game_title_panel);
+        container.add(button_panel);
+
+        button_panel.validate();
+        game_title_panel.validate();
+        icon_panel.validate();
+    }
+
+    public static void main(String[] args) {
+        new Menu();
+    }
+}
 
 
 
