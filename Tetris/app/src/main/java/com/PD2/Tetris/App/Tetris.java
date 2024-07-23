@@ -200,7 +200,7 @@ public void dropCurrentTetromino() {
         }
     }
     @Override
-    public void paintComponent(Graphics g) {
+public void paintComponent(Graphics g) {
         //super.paintComponent(g);
         wall.paint(g);
         if (currentTetromino != null) {
@@ -233,7 +233,7 @@ private void paintSource(Graphics g) {
     public void start() {
         timer.scheduleAtFixedRate(new TimerTask() {
             @Override
-            public void run() {
+public void run() {
                 if (!isPaused && !isOver) {
                     //System.out.println("sssttart");
                     dropCurrentTetromino();
@@ -245,7 +245,7 @@ private void paintSource(Graphics g) {
     }
 
     @Override
-    public void paint(Graphics g) {
+public void paint(Graphics g) {
         g.drawImage(background, 0, 0, null);
         // 平移坐标轴
         g.translate(22, 15);
@@ -293,7 +293,7 @@ private void paintSource(Graphics g) {
         Menu menu = new Menu();
         menu.start_button.addActionListener(new ActionListener() {
             @Override
-            public void actionPerformed(ActionEvent actionEvent) {
+public void actionPerformed(ActionEvent actionEvent) {
                 System.out.println("game start!!!");
                 menu.frame.dispose();
                 Tetris panel=new Tetris();
@@ -314,6 +314,48 @@ private void paintSource(Graphics g) {
 
 
     @Override
-    public void keyTyped(KeyEvent keyEvent) {}
+public void keyTyped(KeyEvent keyEvent) {}
+
+
+@Override
+public void keyPressed(KeyEvent e) {
+        int keyCode = e.getKeyCode();
+
+        switch (keyCode) {
+            case KeyEvent.VK_LEFT:
+                moveCurrentTetrominoLeft();
+                break;
+            case KeyEvent.VK_RIGHT:
+                moveCurrentTetrominoRight();
+                break;
+            case KeyEvent.VK_DOWN:
+                dropCurrentTetromino();
+                break;
+            case KeyEvent.VK_UP:
+                rotateCurrentTetromino();
+                break;
+            case KeyEvent.VK_SPACE:
+                // 硬降代码
+                //hardDropCurrentTetromino();
+                break;
+            case KeyEvent.VK_C:
+                holdCurrentTetromino();
+                break;
+            case KeyEvent.VK_P:
+                if (isPaused) {
+                    resume();
+                } else {
+                    pause();
+                }
+                break;
+            case KeyEvent.VK_Q:
+                System.exit(0);
+                break;
+        }
+    }
+
+    @Override
+public void keyReleased(KeyEvent keyEvent) {}
+}
 
 }
