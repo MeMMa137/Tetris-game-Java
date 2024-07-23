@@ -91,4 +91,117 @@ public void dropCurrentTetromino() {
             repaint();
         }
     }
-    
+    public void moveCurrentTetrominoRight() {
+        if (currentTetromino != null) {
+            currentTetromino.moveRight();
+            repaint();
+        }
+    }
+
+    public void rotateCurrentTetromino() {
+        if (currentTetromino != null) {
+            currentTetromino.rotate();
+            repaint();
+        }
+    }
+
+    public void holdCurrentTetromino() {
+        if (!holdUsed) {
+            if (holdTetromino == null) {
+                holdTetromino = currentTetromino;
+                spawnNewTetromino();
+            } else {
+                Tetromino temp = currentTetromino;
+                currentTetromino = holdTetromino;
+                holdTetromino = temp;
+            }
+            holdUsed = true;
+            repaint();
+        }
+    }
+
+    public void pause() {
+        isPaused = true;
+        timer.cancel();
+    }
+
+    public void resume() {
+        isPaused = false;
+        timer = new Timer();
+        start();
+    }
+
+    public void endGame() {
+        System.out.println("Game Over");
+        gameFrame.dispose(); 
+    }
+
+    @Override
+    public void keyTyped(KeyEvent e) {}
+
+    @Override
+    public void keyPressed(KeyEvent e) {
+        int keyCode = e.getKeyCode();
+
+        switch (keyCode) {
+            case KeyEvent.VK_LEFT:
+                moveCurrentTetrominoLeft();
+                break;
+            case KeyEvent.VK_RIGHT:
+                moveCurrentTetrominoRight();
+                break;
+            case KeyEvent.VK_DOWN:
+                dropCurrentTetromino();
+                break;
+            case KeyEvent.VK_UP:
+                rotateCurrentTetromino();
+                break;
+            case KeyEvent.VK_SPACE:
+                // hardDropCurrentTetromino();
+                break;
+            case KeyEvent.VK_C:
+                holdCurrentTetromino();
+                break;
+            case KeyEvent.VK_P:
+                if (isPaused) {
+                    resume();
+                } else {
+                    pause();
+                }
+                break;
+            case KeyEvent.VK_Q:
+                System.exit(0);
+                break;
+        }
+    }
+
+    @Override
+    public void keyReleased(KeyEvent e) {}
+
+
+    @Override
+    public void paintComponent(Graphics g) {
+        super.paintComponent(g);
+        wall.paint(g);
+        if (currentTetromino != null) {
+            currentTetromino.paint(g);
+        }
+        drawNextTetromino(g); 
+    }
+
+    public void drawNextTetromino(Graphics g) {
+        if (nextTetromino != null) {
+            int offsetX = 400; 
+            int offsetY = 50;
+            int[][] blockPositions = nextTetromino.getBlockPositions();
+            BufferedImage image = nextTetromino.getImage();
+            for (int[] position : blockPositions) {
+                int x = position[0] * Cell.SIZE + offsetX;
+                int y = position[1] * Cell.SIZE + offsetY;
+                g.drawImage(image, x, y, null);
+            }
+        }
+    }
+
+}
+S
