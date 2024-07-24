@@ -110,3 +110,32 @@ public int add(Tetromino t) {
         return 0;
     }
 
+ public void paint(Graphics g) {
+        for (int y = 0; y < HEIGHT; y++) {
+            for (int x = 0; x < WIDTH; x++) {
+                if (wall[y][x] != null) {
+                    g.drawImage(wall[y][x], x * Cell.SIZE, y * Cell.SIZE, null);
+                }
+            }
+        }
+    }
+
+	@Override
+	public String toString() {
+		String result = "-----\n";
+        for (int y = 0; y < HEIGHT; y++) {
+            for (int x = 0; x < WIDTH; x++) {
+                if (wall[y][x] != null) {
+					result += "[ ]";
+                }
+				else {
+					result += "   ";
+				}
+            }
+			result += "\n";
+        }
+		result += "-----\n";
+		return result;
+	}
+}
+
