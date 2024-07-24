@@ -76,8 +76,8 @@ public abstract class Tetromino {
 			rotateTime--;
 		}
 	}
-        
-public boolean coincide() {
+
+	public boolean coincide() {
 		int[][] positions = getBlockPositions();
 		for (int[] position : positions) {
 			int x = position[0];
@@ -97,7 +97,9 @@ public boolean coincide() {
 
 		return false;
 
-public int getRotateTime() {
+	}
+
+	public int getRotateTime() {
 		return rotateTime;
 	}
 
