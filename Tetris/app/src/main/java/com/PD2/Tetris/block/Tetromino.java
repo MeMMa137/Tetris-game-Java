@@ -96,3 +96,76 @@ public boolean coincide() {
 
 
 		return false;
+
+public int getRotateTime() {
+		return rotateTime;
+	}
+
+	public void paint(Graphics g) {
+		BufferedImage image = getImage();
+		int[][] blockPositions = getBlockPositions();
+		for (int[] position : blockPositions) {
+			int x = position[0] * Cell.SIZE;
+			int y = position[1] * Cell.SIZE;
+			g.drawImage(image, x, y, null);
+		}
+	}
+
+	public abstract BufferedImage getImage();
+
+	public int[][] getBlockPositions() {
+		int[][] temp = stateList[rotateTime % stateList.length];
+		int[][] result = new int[4][2];
+		for (int i = 0;i < 4;i++) {
+			result[i][0] = center.getX() + temp[i][0];
+			result[i][1] = center.getY() + temp[i][1];
+		}
+		return result;
+	}
+
+	@Override
+	public String toString() {
+		int[][] currentState = stateList[rotateTime % stateList.length];
+		int minX, maxX, minY, maxY;
+		minX = maxX = currentState[0][0];
+		minY = maxY = currentState[0][1];
+		for (int[] block : currentState) {
+			int x = block[0];
+			int y = block[1];
+			if (x < minX) {
+				minX = x;
+			}
+			if (y < minY) {
+				minY = y;
+			}
+			if (x > maxX) {
+				maxX = x;
+			}
+			if (y > maxY) {
+				maxY = y;
+			}
+		}
+		int width = maxX - minX + 1;
+		int height = maxY - minY + 1;
+		String empty = "   ";
+		String cell = "[ ]";
+		String result = center.toString() + "\n";
+		int index = 0;
+		for (int i = 0;i < height;i++) {
+			for (int j = 0;j < width;j++) {
+				if (j == currentState[index][0] - minX) {
+					result += cell;
+					index++;
+					if (index == currentState.length) {
+						result += "\n";
+						return result;
+					}
+				} else {
+					result += empty;
+				}
+			}
+			result += "\n";
+		}
+		return result;
+	}
+}
